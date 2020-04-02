@@ -30,7 +30,13 @@ namespace ABM.WebApi.Controllers
             var result = xmlOperations.XmlValidationOperation(document, checkConstraints);
             var finalResult = $"The XLM is valid if(0)  = {result.XmlValid}, The Command is valid if (0), otherwise (-1)   = " +
                               $"{ result.DeclarationCommand}, The Command is valid if (0), otherwise (-2)   = {result.SiteId}";
-            return Ok(finalResult);
+            
+            if (result.XmlValid == "0" && result.DeclarationCommand == "0" && result.SiteId == "0")
+            {
+                return Ok(finalResult);
+            }
+
+            return BadRequest(finalResult); 
         }
     }
 }

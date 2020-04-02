@@ -19,6 +19,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="XML\IncorrectInput.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="XML\Input.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -37,5 +37,24 @@ namespace ABM.IntegrationTest
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
             Assert.AreEqual("The XLM is valid if(0)  = 0, The Command is valid if (0), otherwise (-1)   = 0, The Command is valid if (0), otherwise (-2)   = 0", response.Content.ReadAsStringAsync().Result);
         }
+
+        [TestMethod]
+        public void ApiXmlTestIncorrectXml()
+        {
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var xsdImportFilepath = $"{currentDirectory}\\xml\\IncorrectInput.xml";
+            var xDocument = XElement.Load(xsdImportFilepath);
+
+            using var request = new HttpRequestMessage(new HttpMethod("POST"), @"/IeImport")
+            {
+                Content = new StringContent(xDocument.ToString(), Encoding.UTF8, "application/xml")
+            };
+
+            using var client = new TestClientProvider().Client;
+            var response = client.SendAsync(request).Result;
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
+            Assert.AreNotEqual("The XLM is valid if(0)  = 0, The Command is valid if (0), otherwise (-1)   = 0, The Command is valid if (0), otherwise (-2)   = 0", response.Content.ReadAsStringAsync().Result);
+        }
     }
 }
